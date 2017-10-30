@@ -1,0 +1,35 @@
+ooOOoom
+=======
+
++ __Last update:__  2017/10/30
++ __Version:__      0.0.1
+
+#### The spooky Oom sneak preview, released on Halloween 2017
+
+
+Author
+------
+Created by Rich Plastow and Loop.Coop.
+
++ __Website:__    [ooOOoom.loop.coop](http://ooOOoom.loop.coop/)
++ __GitHub:__     [loopdotcoop/ooOOoom](https://github.com/loopdotcoop/ooOOoom)
++ __Trello:__     [Oom](https://trello.com/b/na2rNoyA)
++ __Twitter:__    [#ooOOoom](https://twitter.com/hashtag/ooOOoom)
++ __Instagram:__  [#ooOOoom](https://www.instagram.com/explore/tags/ooOOoom/)
++ __Location:__   Brighton, UK
+
+
+Tested
+------
++ __Android:__             Browser 4.4+
++ __iOS:__                 Safari 7+
++ __Windows 10:__          Edge 14+, IE 11
++ __Windows 7:__           IE 10
++ __Windows XP:__          Firefox 29+, Chrome 22+, Opera 15+
++ __OS X Mountain Lion:__  Safari 6.2+
+
+
+Changelog
+---------
++ Initial commit
++ 0.0.1 Repo basics
