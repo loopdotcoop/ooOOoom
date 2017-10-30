@@ -1,0 +1,459 @@
+<!DOCTYPE HTML>
+<html manifest="index.manifest" lang="en-GB">
+<head>
+
+<!-- Technical meta -->
+<base target="_blank">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<!-- Search engine meta -->
+<title>ooOOoom</title>
+<meta name="description"
+      content="The spooky Oom sneak preview, released on Halloween 2017">
+<link rel="author" href="README.md">
+
+<!-- Twitter Card, and Open Graph for Facebook, LinkedIn, Google+, etc -->
+<meta name="twitter:card"    content="summary">
+<meta name="twitter:site"    content="@loopdotcoop">
+<meta name="twitter:creator" content="@loopdotcoop">
+<meta property="og:type"     content="website">
+<meta property="og:locale"   content="en_GB">
+<meta property="og:url"      content="http://ooOOoom.loop.coop/index.html">
+<meta property="og:image"
+      content="http://ooOOoom.loop.coop/asset/icon/oom-icon-279.png">
+<meta property="og:image:width" content="279">
+<meta property="og:image:height" content="279">
+<meta property="og:title"
+      content="ooOOoom">
+<meta property="og:description"
+      content="The spooky Oom sneak preview, released on Halloween 2017">
+
+<!-- From realfavicongenerator.net - see README.md for settings -->
+<!--
+<link rel="apple-touch-icon" sizes="180x180" href="../asset/icon/apple-touch.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../asset/icon/favicon32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../asset/icon/favicon16.png">
+<link rel="manifest"                  href="../asset/icon/manifest.json">
+<link rel="mask-icon" color="#000000" href="../asset/icon/safari-pinned-tab.svg">
+<link rel="shortcut icon"             href="../asset/icon/favicon.ico">
+<meta name="apple-mobile-web-app-title" content="ooOOoom">
+<meta name="application-name"           content="ooOOoom">
+<meta name="msapplication-config"       content="../asset/icon/browserconfig.xml">
+<meta name="theme-color"                content="#000000">
+-->
+
+<script>!function () {
+if (! window.applicationCache) return;
+var log = []
+
+function logEvent(event) {
+  log.push(event.type);
+  var $log = document.querySelector('#log')
+  if ($log) $log.innerHTML = log.join('\n')
+  console.log(event.type);
+}
+
+window.setInterval( function () {
+  var $log = document.querySelector('#log')
+  if ($log) $log.innerHTML = log.join('\n')
+}, 500);
+
+window.applicationCache.addEventListener('checking',logEvent,false);
+window.applicationCache.addEventListener('noupdate',logEvent,false);
+window.applicationCache.addEventListener('downloading',logEvent,false);
+window.applicationCache.addEventListener('cached',logEvent,false);
+window.applicationCache.addEventListener('updateready',logEvent,false);
+window.applicationCache.addEventListener('obsolete',logEvent,false);
+window.applicationCache.addEventListener('error',logEvent,false);
+
+}()</script>
+
+<style>
+html {
+  position: absolute!important;
+  width: 100%;
+  height: 200%!important;
+  bottom: auto!important;
+  background: #000;
+  font-size: 1.315rem;
+  font-family: Arial, sans-serif;
+  color: #bbb;
+}
+body {
+  overflow-y: scroll!important;
+}
+body.hitzone canvas {
+  cursor: pointer!important;
+}
+a {
+  outline: none!important;
+  color:   #eee!important;
+  cursor:  pointer;
+  text-decoration: none!important;
+  transition: color 0.5s;
+}
+a:hover {
+  color: #6BEDFF!important;
+  text-decoration: underline!important;
+}
+a-scene {
+  position: fixed!important;
+}
+</style>
+
+<!-- JavaScript Libraries -->
+<!-- <script src="//unpkg.com/aframe"></script> -->
+<script src="js/aframe.js"></script>
+<script src="js/soundjs-0.6.2.min.js"></script></head>
+
+<!-- Dispatch <a-entity> mouse events on the `window` -->
+<script>
+AFRAME.registerComponent('ui-event', {
+    init: function () {
+        var el = this.el // <a-entity>
+        var $body = document.querySelector('body')
+        var listener = function (evt) {
+            evt.preventDefault()
+            evt.stopPropagation()
+            if ('mouseenter' === evt.type) $body.classList.add('hitzone')
+            else if ('mouseleave' === evt.type) $body.classList.remove('hitzone')
+            window.dispatchEvent(
+                new CustomEvent('ui-event', { detail: { el:el, type:evt.type } })
+            )
+        }
+        el.addEventListener('mouseenter', listener)
+        el.addEventListener('mouseleave', listener)
+        el.addEventListener('mousedown' , listener)
+        el.addEventListener('mouseup'   , listener)
+    }
+})
+</script>
+
+</head>
+<body class="hitzone">
+
+<header style="position:fixed; top:5px; left:10px; right:10px; z-index:99">
+  <a href="http://loop.coop/">Loop.Coop</a>
+  <a href="https://github.com/loopdotcoop/oom" style="float:right">Oom</a>
+  <pre id="log"></pre>
+</header>
+
+<footer style="position:fixed; bottom:5px; left:10px; z-index:99">
+  <p>Experimental!</p>
+</footer>
+
+
+<!-- Begin the A-Frame Scene -->
+<a-scene inspector cursor="rayOrigin: mouse">
+
+  <a-sky color="#181818"></a-sky>
+  <a-camera position="0 0 4">
+    <a-entity id="cursor"
+      cursor="fuse:false;"
+      position="0 100 -1"
+      geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+      material="color: red; shader: flat">
+    </a-entity>
+  </a-camera>
+
+  <a-box  id="lwall0" position="-10  9 -3"   scale="20.3 10 0.2" rotation="0  10 0" color="#891234"></a-box>
+  <a-box  id="rwall0" position=" 10  9 -3"   scale="20.3 10 0.2" rotation="0 -10 0" color="#891234"></a-box>
+  <a-box  id="lwall1" position="-10  2 -3.3" scale="20.3 10 0.2" rotation="0  10 0" color="#341256"></a-box>
+  <a-box  id="rwall1" position=" 10  2 -3.3" scale="20.3 10 0.2" rotation="0 -10 0" color="#341256"></a-box>
+  <a-box  id="lwall2" position="-10 -5 -3"   scale="20.3 10 0.2" rotation="0  10 0" color="#000856"></a-box>
+  <a-box  id="rwall2" position=" 10 -5 -3"   scale="20.3 10 0.2" rotation="0 -10 0" color="#000856"></a-box>
+
+  <!-- <a-dodecahedron id="button0" position="-5.142 5.516 -3.731" rotation="0 10 0" color="#891234"></a-dodecahedron> -->
+
+  <a-entity id="seq0" position="0 3.25 0"></a-entity>
+  <a-entity id="seq1" position="0 2 0"></a-entity>
+  <a-entity id="seq2" position="0 1 0"></a-entity>
+
+</a-scene>
+<!-- End the A-Frame Scene -->
+
+
+<script>!function () {
+
+//// Parse the URL fragment.
+// console.log(123, window.location.hash);
+
+//// Load the sounds.
+createjs.Sound.registerSound('asset/mp3/sound0.mp3', 'sound0')
+createjs.Sound.registerSound('asset/mp3/sound1.mp3', 'sound1')
+createjs.Sound.registerSound('asset/mp3/sound2.mp3', 'sound2')
+
+//// Element refs.
+const $seq0 = document.querySelector('#seq0')
+const $seq1 = document.querySelector('#seq1')
+const $seq2 = document.querySelector('#seq2')
+
+//// Initialise the three sequences.
+const seq0 = []
+const seq1 = []
+const seq2 = []
+for (let i=0; i<16; i++) seq0[i] = {}
+for (let i=0; i<32; i++) seq1[i] = {}
+for (let i=0; i<16; i++) seq2[i] = {}
+
+const polys = window.polys = []
+let id = 0
+
+for (let i=0, poly; poly=seq0[i]; i++, id++) {
+    polys[id] = poly
+    poly.seq = 0
+    if ( (i % 2 || i < 4) && 3 !== i) {
+        poly.hasSound = false
+        poly.color ='#181818'
+    } else {
+        poly.hasSound = true
+        poly.color =  lighten('#891234', 0.1)
+    }
+    $seq0.innerHTML +=
+`
+    <a-entity rotation="0 ${22.5*i+11.25} 0">
+      <a-entity
+        ui-event
+        id="p${id}"
+        geometry="primitive:dodecahedron; radius:0.333"
+        material="flatShading:true; color:${poly.color}"
+        scale   ="1 1 1"
+        position="0 0 1"
+      ></a-entity>
+    </a-entity>
+`
+}
+for (var i=0, poly; poly=seq1[i]; i++, id++) {
+    polys[id] = poly
+    poly.seq = 1
+    if (i % 8) {
+        poly.hasSound = false
+        poly.color ='#181818'
+    } else {
+        poly.hasSound = true
+        poly.color =  lighten('#341256', 0.1)
+    }
+    $seq1.innerHTML +=
+`
+    <a-entity rotation="0 ${11.25*i+5.625} 0">
+      <a-entity
+        ui-event
+        id="p${id}"
+        geometry="primitive:sphere; radius:0.333; segments-height:4; segments-width:8"
+        material="flatShading:true; color:${poly.color}"
+        scale   ="1 1 1"
+        position="0 0 2"
+      ></a-entity>
+    </a-entity>
+`
+}
+for (var i=0, poly; poly=seq2[i]; i++, id++) {
+    polys[id] = poly
+    poly.seq = 2
+    if ( (i % 2 || i < 8) && 15 !== i) {
+        poly.hasSound = false
+        poly.color ='#181818'
+    } else {
+        poly.hasSound = true
+        poly.color =  lighten('#000856', 0.1)
+    }
+    $seq2.innerHTML +=
+`
+    <a-entity rotation="0 ${22.5*i+11.25} 0">
+      <a-entity
+        ui-event
+        id="p${id}"
+        geometry="primitive:sphere; radius:0.333; segments-height:5; segments-width:10"
+        material="flatShading:true; color:${poly.color}"
+        scale   ="1 1 1"
+        position="0 0 1"
+      ></a-entity>
+    </a-entity>
+`
+}
+
+
+//// Wait a tick for the DOM to created the new <a-entity> elements.
+setTimeout( function () {
+    for (var id=0, poly; poly=polys[id]; id++) {
+        poly.$el                = document.querySelector(`#p${id}`)
+        poly.$rwall             = document.querySelector(`#rwall${poly.seq}`)
+        poly.isHovering         = false
+        poly.scale              = 1
+        poly.hoverScaleTarget   = 1
+        poly.playingScaleTarget = 1
+    }
+    window.requestAnimationFrame(step)
+},1)
+
+
+//// Deal with keypresses.
+const $output = document.querySelector('#output')
+let outputIsVisible = false
+window.addEventListener('keydown', function (evt) {
+    outputIsVisible = ! outputIsVisible
+    if ('§' === evt.key)
+        document.querySelector('#output').style.display =
+            outputIsVisible ? 'block' : 'none'
+})
+
+
+//// Determine whether device has gyroscope. stackoverflow.com/a/33843234
+let gyroPresent = false
+window.addEventListener('devicemotion', function (evt) {
+    if (evt.rotationRate.alpha || evt.rotationRate.beta || evt.rotationRate.gamma) {
+        gyroPresent = true;
+        $scene.removeAttribute('cursor')
+        $cursor.setAttribute('position', '0 0 -1')
+    }
+});
+
+//// Deal with enter/exit VR.
+const $header = document.querySelector('header')
+const $footer = document.querySelector('footer')
+const $scene  = document.querySelector('a-scene')
+const $cursor = document.querySelector('#cursor')
+const $camera = document.querySelector('a-camera')
+$scene.addEventListener('enter-vr', function () {
+    if (gyroPresent) {
+        $header.style.display = 'none'
+        $footer.style.display = 'none'
+        $scene.removeAttribute('cursor')
+        $cursor.setAttribute('position', '0 0 -1')
+        $camera.setAttribute('position', '0 0 4')
+    }
+});
+$scene.addEventListener('exit-vr', function () {
+    if (! gyroPresent) {
+        $header.style.display = 'block'
+        $footer.style.display = 'block'
+        $scene.setAttribute('cursor', 'rayOrigin: mouse')
+        $cursor.setAttribute('position', '0 100 -1')
+        $camera.setAttribute('position', '0 0 4')
+    }
+});
+
+
+//// Deal with UI events.
+let debounceMousedown = -1
+window.addEventListener('ui-event', function (evt) {
+    if (! evt.detail || ! evt.detail.el || null == evt.detail.el.id) return
+    const el = evt.detail.el
+        , id = +( el.id.substr(1) )
+        , type = evt.detail.type
+        , poly = polys[id]
+    if ('mouseenter' === type) {
+        poly.hoverScaleTarget = 1.1
+        poly.isHovering = true
+        poly.$el.setAttribute('material', `flatShading:true; color:${lighten(poly.color, 0.1)}`)
+    } else if ('mouseleave' === type) {
+        poly.hoverScaleTarget = 1
+        poly.isHovering = false
+        poly.$el.setAttribute('material', `flatShading:true; color:${poly.color}`)
+    } else if ('mousedown' === type) {
+        if (debounceMousedown + 400 < evt.timeStamp) {
+            poly.hasSound = ! poly.hasSound
+            poly.color = poly.hasSound ? lighten( poly.$rwall.getAttribute('color'), 0.1 ) : '#181818'
+            debounceMousedown = evt.timeStamp
+        }
+        poly.$el.setAttribute('material', `flatShading:true; color:${lighten(poly.color, 0.5)}`)
+    } else if ('mouseup' === type) {
+        if (poly.isHovering)
+            poly.$el.setAttribute('material', `flatShading:true; color:${lighten(poly.color, 0.1)}`)
+        else
+            poly.$el.setAttribute('material', `flatShading:true; color:${poly.color}`)
+    }
+})
+
+
+//// Deal with timer events.
+window.addEventListener('second-tick', function (evt) {
+    let poly
+    for (let id=0; poly=polys[id]; id++) {
+        poly.playingScaleTarget = 1
+    }
+    poly = seq0[evt.detail.s16]
+    if (poly.hasSound) {
+        poly.playingScaleTarget = 1.2
+        createjs.Sound.play('sound0')
+    }
+    poly = seq1[evt.detail.s32]
+    if (poly.hasSound) {
+        poly.playingScaleTarget = 1.2
+        createjs.Sound.play('sound1')
+    }
+    poly = seq2[~~(evt.detail.s32/2)]
+    if (poly.hasSound) {
+        poly.playingScaleTarget = 1.2
+        if (! (evt.detail.s32 % 2))
+            createjs.Sound.play('sound2')
+    }
+})
+
+
+//// Perform tweening and animation.
+let secondTickHelper = -1
+function step (stamp) {
+    let r
+
+    //// Rotate the sequences.
+    r = (stamp % 16000) * 0.0225; // rotate once every 16s
+    $seq0.setAttribute('rotation', `0 -${r} 0`)
+    r = (stamp % 32000) * 0.01125; // rotate once every 32s
+    $seq2.setAttribute('rotation', `0 -${r} 0`)
+    $seq1.setAttribute('rotation', `0 -${r} 0`)
+
+    //// Trigger an event once a second.
+    if ( (stamp % 1000) < secondTickHelper )
+        window.dispatchEvent( new CustomEvent(
+            'second-tick'
+          , { detail: {
+                s16: ~~((stamp % 16000) / 1000)
+              , s32: ~~((stamp % 32000) / 1000)
+          } }
+        ))
+    secondTickHelper = stamp % 1000
+
+    for (let i=0, poly; poly=polys[i]; i++) {
+
+        //// A playing poly is always scaled-up.
+        const target = poly.playingScaleTarget * poly.hoverScaleTarget
+
+        //// Tween scale.
+        if (poly.scale !== target) {
+            const diff = Math.abs(target - poly.scale)
+            if (0.01 > diff)
+                poly.scale = target // near enough
+            else
+                poly.scale = (poly.scale * 3 + target) / 4
+            poly.$el.setAttribute('scale', `${poly.scale} ${poly.scale} ${poly.scale}`)
+        }
+
+    }
+    window.requestAnimationFrame(step)
+}
+
+//// UTILITY
+function lighten(hex, lightness) { // eg `lighten('#abcdef', 0.25)`
+    let r = parseInt( hex.slice(1, 3), 16 ) // eg 'ab' becomes 171
+      , g = parseInt( hex.slice(3, 5), 16 ) // eg 'cd' becomes 205
+      , b = parseInt( hex.slice(5   ), 16 ) // eg 'ef' becomes 239
+    r += ~~( (255 - r) * lightness ) // part way to white
+    g += ~~( (255 - g) * lightness ) // part way to white
+    b += ~~( (255 - b) * lightness ) // part way to white
+    r = (16 > r ? '0' : '') + r.toString(16)
+    b = (16 > b ? '0' : '') + b.toString(16)
+    g = (16 > g ? '0' : '') + g.toString(16)
+    return '#' + r + g + b
+}
+
+
+
+}()</script>
+
+</body>
+</html>

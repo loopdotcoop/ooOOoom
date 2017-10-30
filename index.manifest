@@ -1,0 +1,17 @@
+CACHE MANIFEST
+
+
+NETWORK:
+# All URLs that start with the following lines are whitelisted.
+http://192.168.1.67:9966/
+http://localhost:9966/
+http://oooooom.loop.coop/
+
+
+CACHE:
+js/aframe.js
+js/soundjs-0.6.2.min.js
+asset/icon/oom-icon-279.png
+asset/mp3/sound0.mp3
+asset/mp3/sound1.mp3
+asset/mp3/sound2.mp3
