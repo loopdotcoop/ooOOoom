@@ -2,14 +2,14 @@ ooOOoom
 =======
 
 + __Last update:__  2017/10/31
-+ __Version:__      0.0.5
++ __Version:__      0.0.6
 
 #### The spooky Oom sneak preview, released on Halloween 2017
 
 
 Author
 ------
-Created by Rich Plastow and Loop.Coop.
+Created by Rich Plastow, Monty Anderson and Loop.Coop.
 
 + __Website:__    [ooOOoom.loop.coop](http://ooOOoom.loop.coop/)
 + __GitHub:__     [loopdotcoop/ooOOoom](https://github.com/loopdotcoop/ooOOoom)
@@ -37,3 +37,4 @@ Changelog
 + 0.0.3 Load and save sequences
 + 0.0.4 Centralised sounds and colors
 + 0.0.5 Sound-change buttons
++ 0.0.6 New colour palette
