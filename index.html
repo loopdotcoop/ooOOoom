@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 
 <!-- Search engine meta -->
-<title>ooOOoom</title>
+<title>ooOOoom! The spooky Oom sneak preview, released on Halloween 2017</title>
 <meta name="description"
       content="The spooky Oom sneak preview, released on Halloween 2017">
 <link rel="author" href="README.md">
@@ -145,7 +145,7 @@ AFRAME.registerComponent('ui-event', {
 
 <header style="position:fixed; top:5px; left:10px; right:10px; z-index:99">
   <a href="http://loop.coop/">Loop.Coop</a>
-  <a href="https://github.com/loopdotcoop/oom" style="float:right">Oom</a>
+  <a href="https://github.com/loopdotcoop/ooOOoom" style="float:right">ooOOoom!</a>
   <pre id="log"></pre>
 </header>
 
@@ -187,7 +187,7 @@ AFRAME.registerComponent('ui-event', {
       <a-sphere class="eye" position=" 0.2 0.239 0.807" color="#ffffff" scale="0.1 0.1 0.1"></a-sphere>
   </a-dodecahedron>
 
-  <a-entity id="seq0" position="0 3.25 0" scale="1.1 1.33 1.1"></a-entity>
+  <a-entity id="seq0" position="0 3.15 0" scale="1.1 1.45 1.1"></a-entity>
   <a-entity id="seq1" position="0 2.25 0" scale="0.9 1.25 0.9"></a-entity>
   <a-entity id="seq2" position="0 1.1 0"  scale="1.1 1.33 1.1"></a-entity>
 
@@ -619,20 +619,20 @@ window.addEventListener('second-tick', function (evt) {
     seq0active = poly
     if (poly.sound) {
         poly.playingScaleTarget = 1.2
-        createjs.Sound.play('seq0-sound' + poly.sound)
+        createjs.Sound.play('seq0-sound' + poly.sound, { delay:evt.detail.delay })
     }
     poly = seq1[evt.detail.s32]
     seq1active = poly
     if (poly.sound) {
         poly.playingScaleTarget = 1.2
-        createjs.Sound.play('seq1-sound' + poly.sound)
+        createjs.Sound.play('seq1-sound' + poly.sound, { delay:evt.detail.delay })
     }
     poly = seq2[~~(evt.detail.s32/2)]
     seq2active = poly
     if (poly.sound) {
         poly.playingScaleTarget = 1.2
         if (! (evt.detail.s32 % 2))
-            createjs.Sound.play('seq2-sound' + poly.sound)
+            createjs.Sound.play('seq2-sound' + poly.sound, { delay:evt.detail.delay })
     }
 })
 
@@ -668,15 +668,19 @@ function step (stamp) {
     $seq1.setAttribute('rotation', `0 -${r} 0`)
 
     //// Trigger an event once a second.
-    if ( (stamp % 1000) < secondTickHelper )
+    if ( (stamp % 1000) < secondTickHelper ) {
         window.dispatchEvent( new CustomEvent(
             'second-tick'
           , { detail: {
                 s16: ~~((stamp % 16000) / 1000)
               , s32: ~~((stamp % 32000) / 1000)
+              , delay: 200 - (stamp % 200)
           } }
         ))
-    secondTickHelper = stamp % 1000
+        secondTickHelper = 0
+    } else {
+        secondTickHelper = stamp % 1000
+    }
 
     //// Animate polys.
     for (let i=0, poly; poly=polys[i]; i++) {
