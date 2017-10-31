@@ -158,7 +158,7 @@ AFRAME.registerComponent('ui-event', {
 <a-scene inspector cursor="rayOrigin: mouse">
 
   <a-sky color="#181818"></a-sky>
-  <a-camera position="0 1 4">
+  <a-camera position="0 0.8 3.7">
     <a-entity id="cursor"
       cursor="fuse:false;"
       position="0 100 -1"
@@ -182,14 +182,14 @@ AFRAME.registerComponent('ui-event', {
   <a-sphere ui-event id="soundnav-prev2" position="-5.2 -1.5 -3.7" rotation="0 10 0" flat-shading="true" segments-height="5" segments-width="10"></a-sphere>
   <a-sphere ui-event id="soundnav-next2" position=" 5.2 -1.5 -3.7" rotation="0 10 0" flat-shading="true" segments-height="5" segments-width="10"></a-sphere>
 
-  <a-dodecahedron id="head" position="0 4.5 0" scale="1 1 1">
-      <a-sphere class="eye" position="-0.2 0.239 0.807" color="black" scale="0.1 0.1 0.1"></a-sphere>
-      <a-sphere class="eye" position=" 0.2 0.239 0.807" color="black" scale="0.1 0.1 0.1"></a-sphere>
+  <a-dodecahedron id="head" position="0 4.2 0" scale="1 1 1" color="#181818">
+      <a-sphere class="eye" position="-0.2 0.239 0.807" color="#ffffff" scale="0.1 0.1 0.1"></a-sphere>
+      <a-sphere class="eye" position=" 0.2 0.239 0.807" color="#ffffff" scale="0.1 0.1 0.1"></a-sphere>
   </a-dodecahedron>
 
-  <a-entity id="seq0" position="0 3.25 0"></a-entity>
-  <a-entity id="seq1" position="0 2 0"></a-entity>
-  <a-entity id="seq2" position="0 1 0"></a-entity>
+  <a-entity id="seq0" position="0 3.25 0" scale="1.1 1.33 1.1"></a-entity>
+  <a-entity id="seq1" position="0 2.25 0" scale="0.9 1.25 0.9"></a-entity>
+  <a-entity id="seq2" position="0 1.1 0"  scale="1.1 1.33 1.1"></a-entity>
 
 </a-scene>
 <!-- End the A-Frame Scene -->
@@ -203,8 +203,8 @@ const colors = [
     [             // seq0
         '#181818' // 0
       , '#136236' // 1
-      , '#0d7568' // 2
-      , '#2a7e34' // 3
+      , '#2a7e34' // 2
+      , '#0d7568' // 3
       , 'xx' // 4
       , 'xx' // 5
       , 'xx' // 6
@@ -214,8 +214,8 @@ const colors = [
   , [             // seq1
         '#181818' // 0
       , '#bc5313' // 1
-      , '#2a7e34' // 2
-      , '#a74122' // 3
+      , '#a74122' // 2
+      , '#c26e00' // 3
       , 'xx' // 4
       , 'xx' // 5
       , 'xx' // 6
@@ -225,8 +225,8 @@ const colors = [
   , [             // seq2
         '#181818' // 0
       , '#5d2472' // 1
-      , '#82246f' // 2
-      , '#481f9c' // 3
+      , '#481f9c' // 2
+      , '#82246f' // 3
       , 'xx' // 4
       , 'xx' // 5
       , 'xx' // 6
@@ -348,15 +348,15 @@ hash.forEach( (raw, i) => {
             return console.log('error: unexpected char ' + char)
         switch (i) {
             case 0:
-                seq0[pos].color = lighten(colors[0][sound], 0.1)
+                seq0[pos].color = lighten(colors[0][sound], 0.05)
                 seq0[pos].sound = sound
                 break
             case 1:
-                seq1[pos].color = lighten(colors[1][sound], 0.1)
+                seq1[pos].color = lighten(colors[1][sound], 0.05)
                 seq1[pos].sound = sound
                 break
             case 2:
-                seq2[pos].color = lighten(colors[2][sound], 0.1)
+                seq2[pos].color = lighten(colors[2][sound], 0.05)
                 seq2[pos].sound = sound
                 break
         }
@@ -557,7 +557,7 @@ function handlePolyEvent (evt, el) {
     } else if ('mousedown' === type) {
         if (debounceMousedown + 400 < evt.timeStamp) {
             poly.sound = poly.sound ? 0 : walls[poly.seq].sound
-            poly.color = poly.sound ? lighten( poly.$rwall.getAttribute('color'), 0.1 ) : colors[poly.seq][0]
+            poly.color = poly.sound ? lighten( poly.$rwall.getAttribute('color'), 0.05 ) : colors[poly.seq][0]
             debounceMousedown = evt.timeStamp
         }
         poly.$el.setAttribute('material', `flatShading:true; color:${lighten(poly.color, 0.5)}`)
@@ -609,7 +609,7 @@ function handleSoundnavEvent (evt, el) {
 
 //// Deal with timer events.+
 
-let seq0active, seq1active, seq2active
+let seq0active = { sound:0 }, seq1active = { sound:0 }, seq2active = { sound:0 }
 window.addEventListener('second-tick', function (evt) {
     let poly
     for (let id=0; poly=polys[id]; id++) {
@@ -622,7 +622,7 @@ window.addEventListener('second-tick', function (evt) {
         createjs.Sound.play('seq0-sound' + poly.sound)
     }
     poly = seq1[evt.detail.s32]
-    seq0active = poly
+    seq1active = poly
     if (poly.sound) {
         poly.playingScaleTarget = 1.2
         createjs.Sound.play('seq1-sound' + poly.sound)
@@ -636,6 +636,7 @@ window.addEventListener('second-tick', function (evt) {
     }
 })
 
+//// Blink the eyes.
 window.addEventListener("second-tick", evt => {
     if(Math.floor(Math.random() * 3) !== 1) {
         return;
@@ -651,6 +652,7 @@ window.addEventListener("second-tick", evt => {
         }
     }, 100);
 });
+
 
 //// Perform tweening and animation.
 ////@TODO change THREE objects directly
@@ -722,12 +724,16 @@ function step (stamp) {
 
     }
 
-    // head
-    const nodAngle = 7;
-    let nodX = (stamp / 40) % (nodAngle * 2);
-    if(nodX > nodAngle) nodX = (nodAngle * 2) - nodX;
+    //// Nod the head.
+    let nod = Math.sin( (stamp % 500) / 500 * 2 * Math.PI )
+      , twoSec = stamp % 2000
 
-    head.$el.setAttribute("rotation", `${nodX} 0 0`);
+         if (1000 < twoSec) nod *= 0.33
+    else if ( 500 < twoSec) nod *= 0.5
+    else if ( 250 < twoSec) nod *= 0.75
+
+    const nodX = 3 + seq0active.sound + seq1active.sound + seq2active.sound
+    head.$el.setAttribute("rotation", `${nod * nodX + 3} 0 0`);
 
     window.requestAnimationFrame(step)
 }
