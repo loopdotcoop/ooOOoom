@@ -158,7 +158,7 @@ AFRAME.registerComponent('ui-event', {
 <a-scene inspector cursor="rayOrigin: mouse">
 
   <a-sky color="#181818"></a-sky>
-  <a-camera position="0 0 4">
+  <a-camera position="0 1 4">
     <a-entity id="cursor"
       cursor="fuse:false;"
       position="0 100 -1"
@@ -181,6 +181,11 @@ AFRAME.registerComponent('ui-event', {
   <a-sphere ui-event id="soundnav-next1" position=" 6.6  2   -3.7" rotation="0 10 0" flat-shading="true" segments-height="4" segments-width="8"></a-sphere>
   <a-sphere ui-event id="soundnav-prev2" position="-5.2 -1.5 -3.7" rotation="0 10 0" flat-shading="true" segments-height="5" segments-width="10"></a-sphere>
   <a-sphere ui-event id="soundnav-next2" position=" 5.2 -1.5 -3.7" rotation="0 10 0" flat-shading="true" segments-height="5" segments-width="10"></a-sphere>
+
+  <a-dodecahedron id="head" position="0 4.5 0" scale="1 1 1">
+      <a-sphere class="eye" position="-0.2 0.239 0.807" color="black" scale="0.1 0.1 0.1"></a-sphere>
+      <a-sphere class="eye" position=" 0.2 0.239 0.807" color="black" scale="0.1 0.1 0.1"></a-sphere>
+  </a-dodecahedron>
 
   <a-entity id="seq0" position="0 3.25 0"></a-entity>
   <a-entity id="seq1" position="0 2 0"></a-entity>
@@ -398,6 +403,13 @@ createjs.Sound.registerSound('asset/mp3/seq2-sound3.mp3', 'seq2-sound3')
 const $seq0 = document.querySelector('#seq0')
 const $seq1 = document.querySelector('#seq1')
 const $seq2 = document.querySelector('#seq2')
+
+const head = {
+    $el: document.querySelector("#head"),
+    $$eyes: document.querySelectorAll(".eye"),
+    nodTarget: 1,
+    nod: 0
+};
 
 const polys = []
 let id = 0
@@ -619,6 +631,21 @@ window.addEventListener('second-tick', function (evt) {
     }
 })
 
+window.addEventListener("second-tick", evt => {
+    if(Math.floor(Math.random() * 3) !== 1) {
+        return;
+    }
+
+    for(let $eye of head.$$eyes) {
+        $eye.setAttribute("visible", "false");
+    }
+
+    setTimeout(() => {
+        for(let $eye of head.$$eyes) {
+            $eye.setAttribute("visible", "true");
+        }
+    }, 100);
+});
 
 //// Perform tweening and animation.
 ////@TODO change THREE objects directly
