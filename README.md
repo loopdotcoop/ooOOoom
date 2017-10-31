@@ -2,7 +2,7 @@ ooOOoom
 =======
 
 + __Last update:__  2017/10/31
-+ __Version:__      1.0.0
++ __Version:__      1.0.1
 
 #### The spooky Oom sneak preview, released on Halloween 2017
 
@@ -40,3 +40,4 @@ Changelog
 + 0.0.6 New colour palette
 + 0.0.7 Sine-wave nodding black head
 + 1.0.0 Initial release with nine mp3s
++ 1.0.1 Hide manifest log
