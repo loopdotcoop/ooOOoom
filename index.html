@@ -50,17 +50,18 @@
 if (! window.applicationCache) return;
 var log = []
 
-function logEvent(event) {
-  log.push(event.type);
+function renderLog() {
+  if (! log.length) return
   var $log = document.querySelector('#log')
   if ($log) $log.innerHTML = log.join('\n')
-  console.log(event.type);
 }
 
-window.setInterval( function () {
-  var $log = document.querySelector('#log')
-  if ($log) $log.innerHTML = log.join('\n')
-}, 500);
+function logEvent(event) {
+  log.push(event.type)
+  renderLog()
+}
+
+window.setInterval(renderLog, 500);
 
 window.applicationCache.addEventListener('checking',logEvent,false);
 window.applicationCache.addEventListener('noupdate',logEvent,false);
@@ -99,6 +100,14 @@ a {
 a:hover {
   color: #6BEDFF!important;
   text-decoration: underline!important;
+}
+#save-button {
+  padding: 0.5em 1em;
+  background: rgba(0,0,0,0.5);
+  cursor: pointer;
+}
+#save-button:hover {
+  background: #666;
 }
 a-scene {
   position: fixed!important;
@@ -142,8 +151,8 @@ AFRAME.registerComponent('ui-event', {
   <pre id="log"></pre>
 </header>
 
-<footer style="position:fixed; bottom:5px; left:10px; z-index:99">
-  <p>Experimental!</p>
+<footer style="position:fixed; bottom:0; left:10px; z-index:99">
+  <p id="save-button">Save</p>
 </footer>
 
 
@@ -179,8 +188,79 @@ AFRAME.registerComponent('ui-event', {
 
 <script>!function () {
 
+//// Initialise the three sequences.
+const seq0 = []
+const seq1 = []
+const seq2 = []
+for (let i=0; i<16; i++) seq0[i] = { sound:0, color:'#181818' }
+for (let i=0; i<32; i++) seq1[i] = { sound:0, color:'#181818' }
+for (let i=0; i<16; i++) seq2[i] = { sound:0, color:'#181818' }
+
 //// Parse the URL fragment.
-// console.log(123, window.location.hash);
+let hash = window.location.hash || ',,'
+hash = hash.substr(1).split(',')
+if (3 !== hash.length) return console.log('error: hash.length ' + hash.length)
+hash.forEach( (raw, i) => {
+    raw = decodeURI(raw)
+    raw.split('').forEach( char => {
+        let pos = 'abcdefghijklmnopqrstuvwxyz01234-'.indexOf(char), sound = 1
+        if (0 > pos)
+            pos = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ56789_'.indexOf(char), sound = 2
+        if (0 > pos)
+            pos = 'ĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğ'.indexOf(char), sound = 3
+        if (0 > pos)
+            pos = 'ĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿ'.indexOf(char), sound = 4
+        if (0 > pos)
+            pos = 'ŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞş'.indexOf(char), sound = 5
+        if (0 > pos)
+            pos = 'ŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſ'.indexOf(char), sound = 6
+        if (0 > pos)
+            pos = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞß'.indexOf(char), sound = 7
+        if (0 > pos)
+            pos = 'àáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ'.indexOf(char), sound = 8
+        if (0 > pos)
+            return console.log('error: unexpected char ' + char)
+        switch (i) {
+            case 0:
+                seq0[pos].color = lighten('#891234', 0.1)
+                seq0[pos].sound = sound
+                break
+            case 1:
+                seq1[pos].color = lighten('#341256', 0.1)
+                seq1[pos].sound = sound
+                break
+            case 2:
+                seq2[pos].color = lighten('#000856', 0.1)
+                seq2[pos].sound = sound
+                break
+        }
+    })
+})
+
+
+//// Deal with save-button press.
+const $save   = document.querySelector('#save-button')
+$save.addEventListener('click', evt => {
+    let hash = ['','','']
+    seq0.forEach( (poly, pos) => hash[0] += soundToChar(poly.sound, pos) )
+    seq1.forEach( (poly, pos) => hash[1] += soundToChar(poly.sound, pos) )
+    seq2.forEach( (poly, pos) => hash[2] += soundToChar(poly.sound, pos) )
+    document.location.assign( window.location.href.split('#')[0] + '#' + hash.join(',') )
+})
+
+function soundToChar (sound, pos) {
+    return ([
+        Array(32).fill('')
+      , 'abcdefghijklmnopqrstuvwxyz01234-'
+      , 'ABCDEFGHIJKLMNOPQRSTUVWXYZ56789_'
+      , 'ĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğ'
+      , 'ĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿ'
+      , 'ŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞş'
+      , 'ŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſ'
+      , 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞß'
+      , 'àáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ'
+    ])[sound][pos]
+}
 
 //// Load the sounds.
 createjs.Sound.registerSound('asset/mp3/sound0.mp3', 'sound0')
@@ -192,88 +272,83 @@ const $seq0 = document.querySelector('#seq0')
 const $seq1 = document.querySelector('#seq1')
 const $seq2 = document.querySelector('#seq2')
 
-//// Initialise the three sequences.
-const seq0 = []
-const seq1 = []
-const seq2 = []
-for (let i=0; i<16; i++) seq0[i] = {}
-for (let i=0; i<32; i++) seq1[i] = {}
-for (let i=0; i<16; i++) seq2[i] = {}
-
 const polys = window.polys = []
 let id = 0
 
 for (let i=0, poly; poly=seq0[i]; i++, id++) {
     polys[id] = poly
     poly.seq = 0
-    if ( (i % 2 || i < 4) && 3 !== i) {
-        poly.hasSound = false
-        poly.color ='#181818'
-    } else {
-        poly.hasSound = true
-        poly.color =  lighten('#891234', 0.1)
-    }
-    $seq0.innerHTML +=
+    // if ( (i % 2 || i < 4) && 3 !== i) {
+    //     poly.sound = false
+    //     poly.color ='#181818'
+    // } else {
+    //     poly.sound = true
+    //     poly.color =  lighten('#891234', 0.1)
+    // }
+    const $seq = document.createElement('a-entity')
+    $seq.setAttribute('rotation', `0 ${22.5*i+11.25} 0`)
+    $seq.innerHTML =
 `
-    <a-entity rotation="0 ${22.5*i+11.25} 0">
-      <a-entity
-        ui-event
-        id="p${id}"
-        geometry="primitive:dodecahedron; radius:0.333"
-        material="flatShading:true; color:${poly.color}"
-        scale   ="1 1 1"
-        position="0 0 1"
-      ></a-entity>
-    </a-entity>
+  <a-entity
+    ui-event
+    id="p${id}"
+    geometry="primitive:dodecahedron; radius:0.333"
+    material="flatShading:true; color:${poly.color}"
+    scale   ="1 1 1"
+    position="0 0 1"
+  ></a-entity>
 `
+    $seq0.appendChild($seq)
 }
 for (var i=0, poly; poly=seq1[i]; i++, id++) {
     polys[id] = poly
     poly.seq = 1
-    if (i % 8) {
-        poly.hasSound = false
-        poly.color ='#181818'
-    } else {
-        poly.hasSound = true
-        poly.color =  lighten('#341256', 0.1)
-    }
-    $seq1.innerHTML +=
+    // if (i % 8) {
+    //     poly.sound = false
+    //     poly.color ='#181818'
+    // } else {
+    //     poly.sound = true
+    //     poly.color =  lighten('#341256', 0.1)
+    // }
+    const $seq = document.createElement('a-entity')
+    $seq.setAttribute('rotation', `0 ${11.25*i+5.625} 0`)
+    $seq.innerHTML =
 `
-    <a-entity rotation="0 ${11.25*i+5.625} 0">
-      <a-entity
-        ui-event
-        id="p${id}"
-        geometry="primitive:sphere; radius:0.333; segments-height:4; segments-width:8"
-        material="flatShading:true; color:${poly.color}"
-        scale   ="1 1 1"
-        position="0 0 2"
-      ></a-entity>
-    </a-entity>
+  <a-entity
+    ui-event
+    id="p${id}"
+    geometry="primitive:sphere; radius:0.333; segments-height:4; segments-width:8"
+    material="flatShading:true; color:${poly.color}"
+    scale   ="1 1 1"
+    position="0 0 2"
+  ></a-entity>
 `
+    $seq1.appendChild($seq)
 }
 for (var i=0, poly; poly=seq2[i]; i++, id++) {
     polys[id] = poly
     poly.seq = 2
-    if ( (i % 2 || i < 8) && 15 !== i) {
-        poly.hasSound = false
-        poly.color ='#181818'
-    } else {
-        poly.hasSound = true
-        poly.color =  lighten('#000856', 0.1)
-    }
-    $seq2.innerHTML +=
+    // if ( (i % 2 || i < 8) && 15 !== i) {
+    //     poly.sound = false
+    //     poly.color ='#181818'
+    // } else {
+    //     poly.sound = true
+    //     poly.color =  lighten('#000856', 0.1)
+    // }
+    const $seq = document.createElement('a-entity')
+    $seq.setAttribute('rotation', `0 ${22.5*i+11.25} 0`)
+    $seq.innerHTML =
 `
-    <a-entity rotation="0 ${22.5*i+11.25} 0">
-      <a-entity
-        ui-event
-        id="p${id}"
-        geometry="primitive:sphere; radius:0.333; segments-height:5; segments-width:10"
-        material="flatShading:true; color:${poly.color}"
-        scale   ="1 1 1"
-        position="0 0 1"
-      ></a-entity>
-    </a-entity>
+  <a-entity
+    ui-event
+    id="p${id}"
+    geometry="primitive:sphere; radius:0.333; segments-height:5; segments-width:10"
+    material="flatShading:true; color:${poly.color}"
+    scale   ="1 1 1"
+    position="0 0 1"
+  ></a-entity>
 `
+    $seq2.appendChild($seq)
 }
 
 
@@ -311,6 +386,7 @@ window.addEventListener('devicemotion', function (evt) {
         $cursor.setAttribute('position', '0 0 -1')
     }
 });
+
 
 //// Deal with enter/exit VR.
 const $header = document.querySelector('header')
@@ -356,8 +432,8 @@ window.addEventListener('ui-event', function (evt) {
         poly.$el.setAttribute('material', `flatShading:true; color:${poly.color}`)
     } else if ('mousedown' === type) {
         if (debounceMousedown + 400 < evt.timeStamp) {
-            poly.hasSound = ! poly.hasSound
-            poly.color = poly.hasSound ? lighten( poly.$rwall.getAttribute('color'), 0.1 ) : '#181818'
+            poly.sound = poly.sound ? 0 : 1
+            poly.color = poly.sound ? lighten( poly.$rwall.getAttribute('color'), 0.1 ) : '#181818'
             debounceMousedown = evt.timeStamp
         }
         poly.$el.setAttribute('material', `flatShading:true; color:${lighten(poly.color, 0.5)}`)
@@ -377,17 +453,17 @@ window.addEventListener('second-tick', function (evt) {
         poly.playingScaleTarget = 1
     }
     poly = seq0[evt.detail.s16]
-    if (poly.hasSound) {
+    if (poly.sound) {
         poly.playingScaleTarget = 1.2
         createjs.Sound.play('sound0')
     }
     poly = seq1[evt.detail.s32]
-    if (poly.hasSound) {
+    if (poly.sound) {
         poly.playingScaleTarget = 1.2
         createjs.Sound.play('sound1')
     }
     poly = seq2[~~(evt.detail.s32/2)]
-    if (poly.hasSound) {
+    if (poly.sound) {
         poly.playingScaleTarget = 1.2
         if (! (evt.detail.s32 % 2))
             createjs.Sound.play('sound2')

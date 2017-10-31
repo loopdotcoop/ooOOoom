@@ -1,8 +1,8 @@
 ooOOoom
 =======
 
-+ __Last update:__  2017/10/30
-+ __Version:__      0.0.2
++ __Last update:__  2017/10/31
++ __Version:__      0.0.3
 
 #### The spooky Oom sneak preview, released on Halloween 2017
 
@@ -34,3 +34,4 @@ Changelog
 + Initial commit
 + 0.0.1 Repo basics
 + 0.0.2 Copied from github.com/loopdotcoop/oom/tree/master/support 2017/10/21
++ 0.0.3 Load and save sequences
