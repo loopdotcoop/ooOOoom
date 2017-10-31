@@ -197,7 +197,7 @@ for (let i=0; i<32; i++) seq1[i] = { sound:0, color:'#181818' }
 for (let i=0; i<16; i++) seq2[i] = { sound:0, color:'#181818' }
 
 //// Parse the URL fragment.
-let hash = window.location.hash || ',,'
+let hash = window.location.hash || '#,,'
 hash = hash.substr(1).split(',')
 if (3 !== hash.length) return console.log('error: hash.length ' + hash.length)
 hash.forEach( (raw, i) => {
