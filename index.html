@@ -718,8 +718,8 @@ function step (stamp) {
     }
 
     // head
-    const nodAngle = 30;
-    let nodX = (stamp / 40) % (nodAngle * 2);
+    const nodAngle = 10;
+    let nodX = (stamp / 50) % (nodAngle * 2);
     if(nodX > nodAngle) nodX = (nodAngle * 2) - nodX;
 
     head.$el.setAttribute("rotation", `${nodX} 0 0`);
