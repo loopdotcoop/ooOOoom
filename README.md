@@ -1,8 +1,8 @@
 ooOOoom
 =======
 
-+ __Last update:__  2017/10/31
-+ __Version:__      1.0.1
++ __Last update:__  2017/11/28
++ __Version:__      1.1.0
 
 #### The spooky Oom sneak preview, released on Halloween 2017
 
@@ -11,7 +11,7 @@ Author
 ------
 Created by Rich Plastow, Monty Anderson and Loop.Coop.
 
-+ __Website:__    [ooOOoom.loop.coop](http://ooOOoom.loop.coop/index.html#ĂDo,ABCefgIJKČĎĐĒuvwYZ5234,abCDEĆćĈĉmnop)
++ __Website:__     [ooOOoom.loop.coop](http://ooOOoom.loop.coop/index.html#ĂDo,ABCefgIJKČĎĐĒuvwYZ5234,abCDEĆćĈĉmnop)
 + __GitHub:__     [loopdotcoop/ooOOoom](https://github.com/loopdotcoop/ooOOoom)
 + __Trello:__     [Oom](https://trello.com/b/na2rNoyA)
 + __Twitter:__    [#ooOOoom](https://twitter.com/hashtag/ooOOoom)
@@ -41,3 +41,4 @@ Changelog
 + 0.0.7 Sine-wave nodding black head
 + 1.0.0 Initial release with nine mp3s
 + 1.0.1 Hide manifest log
++ 1.1.0 Initial hand-controls component tryout

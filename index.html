@@ -155,17 +155,24 @@ AFRAME.registerComponent('ui-event', {
 
 
 <!-- Begin the A-Frame Scene -->
-<a-scene inspector cursor="rayOrigin: mouse">
+<a-scene inspector>
 
   <a-sky color="#181818"></a-sky>
   <a-camera position="0 0.8 3.7">
     <a-entity id="cursor"
-      cursor="fuse:false;"
+      cursor="fuse:false; rayOrigin:mouse"
       position="0 100 -1"
+      raycaster="objects: [ui-event]"
       geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
       material="color: red; shader: flat">
     </a-entity>
   </a-camera>
+
+  <!-- Hand Controls -->
+  <a-entity hand-controls="left"></a-entity>
+  <a-entity hand-controls="right"></a-entity>
+
+  <!-- <a-box id="blend-test" position="0 1.5 2" opacity="0.5"></a-box> -->
 
   <a-box id="lwall0" position="-10  9 -3"   scale="20.3 10 0.2" rotation="0  10 0"></a-box>
   <a-box id="rwall0" position=" 10  9 -3"   scale="20.3 10 0.2" rotation="0 -10 0"></a-box>
@@ -473,6 +480,8 @@ for (var i=0, poly; poly=seq2[i]; i++, id++) {
 
 //// Wait a tick for the DOM to created the new <a-entity> elements.
 setTimeout( function () {
+    // document.querySelector('#blend-test').object3D.children[0].material.blending
+    //   = THREE.AdditiveBlending;
     for (var id=0, poly; poly=polys[id]; id++) {
         poly.$el                = document.querySelector(`#p${id}`)
         poly.$rwall             = document.querySelector(`#rwall${poly.seq}`)
