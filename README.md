@@ -2,7 +2,7 @@ ooOOoom
 =======
 
 + __Last update:__  2017/11/28
-+ __Version:__      1.1.1
++ __Version:__      1.1.2
 
 #### The spooky Oom sneak preview, released on Halloween 2017
 
@@ -43,3 +43,4 @@ Changelog
 + 1.0.1 Hide manifest log
 + 1.1.0 Initial hand-controls component tryout
 + 1.1.1 Initial laser-controls component tryout
++ 1.1.2 Repositioned and bigger laser-controls
