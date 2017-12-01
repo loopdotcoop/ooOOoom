@@ -158,19 +158,22 @@ AFRAME.registerComponent('ui-event', {
 <a-scene inspector>
 
   <a-sky color="#181818"></a-sky>
-  <a-camera position="0 0.8 3.7">
-    <a-entity id="cursor"
-      cursor="fuse:false; rayOrigin:mouse"
-      position="0 100 -1"
-      raycaster="objects: [ui-event]"
-      geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
-      material="color: red; shader: flat">
+  <a-entity id="camera-position" position="0 1 3.7">
+    <!-- note that <a-camera userHeight="1.6"> does not work -->
+    <a-entity camera="userHeight: 1.6" look-controls><!-- 1.6 is default -->
+      <a-entity id="cursor"
+        cursor="fuse:false; rayOrigin:mouse"
+        position="0 100 -1"
+        raycaster="objects: [ui-event]"
+        geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+        material="color: red; shader: flat">
+      </a-entity>
     </a-entity>
-  </a-camera>
 
   <!-- Hand Controls -->
   <!-- <a-entity laser-controls="left"></a-entity> -->
-  <a-entity position="0 0 3" scale="4 4 4" laser-controls="right"></a-entity>
+  <a-entity position="0 0 0" scale="1 1 1" laser-controls="right"></a-entity>
+  </a-entity>
 
   <!-- <a-box id="blend-test" position="0 1.5 2" opacity="0.5"></a-box> -->
 
@@ -521,14 +524,14 @@ const $header = document.querySelector('header')
 const $footer = document.querySelector('footer')
 const $scene  = document.querySelector('a-scene')
 const $cursor = document.querySelector('#cursor')
-const $camera = document.querySelector('a-camera')
+const $cameraPosition = document.querySelector('#camera-position')
 $scene.addEventListener('enter-vr', function () {
     if (gyroPresent) {
         $header.style.display = 'none'
         $footer.style.display = 'none'
         $scene.removeAttribute('cursor')
         $cursor.setAttribute('position', '0 0 -1')
-        $camera.setAttribute('position', '0 0 4')
+        // $cameraPosition.setAttribute('position', '0 0 4')
     }
 });
 $scene.addEventListener('exit-vr', function () {
@@ -537,7 +540,7 @@ $scene.addEventListener('exit-vr', function () {
         $footer.style.display = 'block'
         $scene.setAttribute('cursor', 'rayOrigin: mouse')
         $cursor.setAttribute('position', '0 100 -1')
-        $camera.setAttribute('position', '0 0 4')
+        // $cameraPosition.setAttribute('position', '0 0 4')
     }
 });
 
