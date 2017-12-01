@@ -173,7 +173,7 @@ AFRAME.registerComponent('ui-event', {
   <!-- Hand Controls -->
   <!-- <a-entity laser-controls="left"></a-entity> -->
   <a-entity position="0 0 0" scale="1 1 1" laser-controls="right"></a-entity>
-  </a-entity>
+</a-entity>
 
   <!-- <a-box id="blend-test" position="0 1.5 2" opacity="0.5"></a-box> -->
 
@@ -193,8 +193,8 @@ AFRAME.registerComponent('ui-event', {
   <a-sphere ui-event id="soundnav-next2" position=" 5.2 -1.5 -3.7" rotation="0 10 0" flat-shading="true" segments-height="5" segments-width="10"></a-sphere>
 
   <a-dodecahedron id="head" position="0 4.2 0" scale="1 1 1" color="#181818">
-      <a-sphere class="eye" position="-0.2 0.239 0.807" color="#ffffff" scale="0.1 0.1 0.1"></a-sphere>
-      <a-sphere class="eye" position=" 0.2 0.239 0.807" color="#ffffff" scale="0.1 0.1 0.1"></a-sphere>
+      <a-sphere class="eye" position="-0.2 0.239 0.807" color="#ccffff" scale="0.1 0.1 0.1"></a-sphere>
+      <a-sphere class="eye" position=" 0.2 0.239 0.807" color="#ccffff" scale="0.1 0.1 0.1"></a-sphere>
   </a-dodecahedron>
 
   <a-entity id="seq0" position="0 3.15 0" scale="1.1 1.45 1.1"></a-entity>
@@ -510,6 +510,7 @@ window.addEventListener('keydown', function (evt) {
 
 //// Determine whether device has gyroscope. stackoverflow.com/a/33843234
 let gyroPresent = false
+/*
 window.addEventListener('devicemotion', function (evt) {
     if (evt.rotationRate.alpha || evt.rotationRate.beta || evt.rotationRate.gamma) {
         gyroPresent = true;
@@ -517,20 +518,20 @@ window.addEventListener('devicemotion', function (evt) {
         $cursor.setAttribute('position', '0 0 -1')
     }
 });
-
+*/
 
 //// Deal with enter/exit VR.
 const $header = document.querySelector('header')
 const $footer = document.querySelector('footer')
 const $scene  = document.querySelector('a-scene')
-const $cursor = document.querySelector('#cursor')
+//const $cursor = document.querySelector('#cursor')
 const $cameraPosition = document.querySelector('#camera-position')
 $scene.addEventListener('enter-vr', function () {
     if (gyroPresent) {
         $header.style.display = 'none'
         $footer.style.display = 'none'
-        $scene.removeAttribute('cursor')
-        $cursor.setAttribute('position', '0 0 -1')
+        //$scene.removeAttribute('cursor')
+        //$cursor.setAttribute('position', '0 0 -1')
         // $cameraPosition.setAttribute('position', '0 0 4')
     }
 });
@@ -538,8 +539,8 @@ $scene.addEventListener('exit-vr', function () {
     if (! gyroPresent) {
         $header.style.display = 'block'
         $footer.style.display = 'block'
-        $scene.setAttribute('cursor', 'rayOrigin: mouse')
-        $cursor.setAttribute('position', '0 100 -1')
+        //$scene.setAttribute('cursor', 'rayOrigin: mouse')
+        //$cursor.setAttribute('position', '0 100 -1')
         // $cameraPosition.setAttribute('position', '0 0 4')
     }
 });
