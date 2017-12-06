@@ -2,7 +2,7 @@ ooOOoom
 =======
 
 + __Last update:__  2017/11/28
-+ __Version:__      1.1.5
++ __Version:__      1.1.6
 
 #### The spooky Oom sneak preview, released on Halloween 2017
 
@@ -43,7 +43,8 @@ Changelog
 + 1.0.1 Hide manifest log
 + 1.1.0 Initial hand-controls component tryout
 + 1.1.1 Initial laser-controls component tryout
-+ 1.1.2 Repositioned and bigger laser-controls
 + 1.1.3 Camera and laser-control proper position for Vive
++ 1.1.2 Repositioned and bigger laser-controls
 + 1.1.4 Temporarily removed some cursor code
 + 1.1.5 Vive menu-button toggles #menu scale
++ 1.1.6 Vive trackpaddown makes hovered-poly invisible

@@ -604,6 +604,11 @@ $controlLeft.addEventListener('menudown', function () {
     0 === $menu.getAttribute('scale').x ? '2 1.7 0.05' : '0 0 0'
   )
 });
+$controlLeft.addEventListener('trackpaddown', function () {
+  for (let poly of polys)
+    if (poly.isHovering)
+      poly.$el.setAttribute('visible', 'false')
+});
 
 
 //// Deal with UI events.
