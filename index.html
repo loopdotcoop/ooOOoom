@@ -115,7 +115,34 @@ a-scene {
 <!-- JavaScript Libraries -->
 <!-- <script src="//unpkg.com/aframe"></script> -->
 <script src="js/aframe.js"></script>
-<script src="js/soundjs-0.6.2.min.js"></script></head>
+<script src="js/soundjs-0.6.2.min.js"></script>
+
+<!-- cross-device UI, from: -->
+<!-- unpkg.com/aframe-input-mapping-component/dist/aframe-input-mapping-component.min.js -->
+<!-- <script src="js/aframe-inputmapping-component.min.js"></script> -->
+<script>// from https://blog.mozvr.com/input-mapping/
+/*
+//// Define a mapping.
+var mappings = {
+  default: {
+    'vive-controls': {
+      menudown: 'toggleMenu'
+    },
+
+    'oculus-touch-controls': {
+      abuttondown: 'toggleMenu',
+      xbuttondown: 'toggleMenu'
+    },
+
+    'windows-motion-controls': {
+      menudown: 'toggleMenu'
+    }
+  }
+};
+//// Register it.
+AFRAME.registerInputMappings(mappings);
+*/
+</script>
 
 <!-- Dispatch <a-entity> mouse events on the `window` -->
 <script>
@@ -172,7 +199,15 @@ AFRAME.registerComponent('ui-event', {
 
   <!-- Hand Controls -->
   <!-- <a-entity laser-controls="left"></a-entity> -->
-  <a-entity position="0 0 0" scale="1 1 1" laser-controls="right"></a-entity>
+  <a-entity id="control-left" position="0 0 0" scale="1 1 1" laser-controls="left"></a-entity>
+
+  <!-- <a-entity id="rightHand"
+      oculus-touch-controls="hand: right"
+      gearvr-controls="hand: right"
+      daydream-controls="hand: right"
+      vive-controls="hand: right">
+  </a-entity> -->
+
 </a-entity>
 
   <!-- <a-box id="blend-test" position="0 1.5 2" opacity="0.5"></a-box> -->
@@ -200,6 +235,8 @@ AFRAME.registerComponent('ui-event', {
   <a-entity id="seq0" position="0 3.15 0" scale="1.1 1.45 1.1"></a-entity>
   <a-entity id="seq1" position="0 2.25 0" scale="0.9 1.25 0.9"></a-entity>
   <a-entity id="seq2" position="0 1.1 0"  scale="1.1 1.33 1.1"></a-entity>
+
+  <a-box id="menu" position="0 2.55 2.5" scale="0 0 0"></a-box>
 
 </a-scene>
 <!-- End the A-Frame Scene -->
@@ -543,6 +580,29 @@ $scene.addEventListener('exit-vr', function () {
         //$cursor.setAttribute('position', '0 100 -1')
         // $cameraPosition.setAttribute('position', '0 0 4')
     }
+});
+
+//// Events from input-mappings.
+/*
+const $menu = document.querySelector('#menu')
+$scene.addEventListener('toggleMenu', function () {
+  console.log('toggleMenu');
+  $menu.setAttribute(
+    'visible',
+    'true' === $menu.getAttribute('visible') ? 'false' : 'true'
+  )
+});
+*/
+
+//// Vive events.
+//// This toggles the menu, nomatter where the laser is pointing.
+const $menu = document.querySelector('#menu')
+const $controlLeft = document.querySelector('#control-left')
+$controlLeft.addEventListener('menudown', function () {
+  $menu.setAttribute(
+    'scale',
+    0 === $menu.getAttribute('scale').x ? '2 1.7 0.05' : '0 0 0'
+  )
 });
 
 
