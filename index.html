@@ -609,6 +609,9 @@ $controlLeft.addEventListener('trackpaddown', function () {
     if (poly.isHovering)
       poly.$el.setAttribute('visible', 'false')
 });
+$controlLeft.addEventListener('axismove', function (evt) { // tends to get triggered when trackpad is pressed, too
+  console.log(evt.detail.axis)
+});
 
 
 //// Deal with UI events.
