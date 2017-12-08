@@ -2,7 +2,7 @@ ooOOoom
 =======
 
 + __Last update:__  2017/11/28
-+ __Version:__      1.1.9
++ __Version:__      1.1.10
 
 #### The spooky Oom sneak preview, released on Halloween 2017
 
@@ -51,3 +51,4 @@ Changelog
 + 1.1.7 Vive trackpad axismove x and y logs to console
 + 1.1.8 Vive trackpad axismove x and y moves camera position
 + 1.1.9 Vive left and right controllers both appear
++ 1.1.10 Vive both controllers fully work, Firefox and Chromium
