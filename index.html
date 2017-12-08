@@ -599,16 +599,34 @@ const toggleMenu = function () {
     0 === $menu.getAttribute('scale').x ? '2 1.7 0.05' : '0 0 0'
   )
 }
-$controlLeft.addEventListener('menudown', toggleMenu);
-$controlRight.addEventListener('menudown', toggleMenu);
+$controlLeft.addEventListener('menudown', toggleMenu); // Vive
+$controlRight.addEventListener('menudown', toggleMenu); // Vive
+//$controlLeft.addEventListener('gripdown', toggleMenu); // Rift -- grip is actually a bit too easy to accidentally press
+//$controlRight.addEventListener('gripdown', toggleMenu); // Rift -- grip is actually a bit too easy to accidentally press
+$controlLeft.addEventListener('xbuttondown', toggleMenu); // Rift -- the X-button is only on the left-controller - move your thumb from the thumbstick rightwards and towards you
+$controlRight.addEventListener('abuttondown', toggleMenu); // Rift -- the A-button is only on the right-controller - move your thumb from the thumbstick leftwards and towards you
+$controlLeft.addEventListener('ybuttondown', toggleMenu); // Rift -- the Y-button is only on the left-controller - move your thumb from the thumbstick rightwards and away from you
+$controlRight.addEventListener('bbuttondown', toggleMenu); // Rift -- the B-button is only on the right-controller - move your thumb from the thumbstick leftwards and away from you
 
 const hidePoly = function () {
   for (let poly of polys)
     if (poly.isHovering)
       poly.$el.setAttribute('visible', 'false')
 };
-$controlLeft.addEventListener('trackpaddown', hidePoly);
-$controlRight.addEventListener('trackpaddown', hidePoly);
+$controlLeft.addEventListener('trackpaddown', hidePoly); // Vive
+$controlRight.addEventListener('trackpaddown', hidePoly); // Vive
+$controlLeft.addEventListener('thumbstickdown', hidePoly); // Rift
+$controlRight.addEventListener('thumbstickdown', hidePoly); // Rift
+
+//// Determine whether the controller has a thumbstick or a trackpad.
+let thumbstickMode = false;
+const useThumbstickMode = function (evt) {
+  thumbstickMode = true;
+  $controlLeft.removeEventListener('thumbsticktouchstart', useThumbstickMode);
+  $controlRight.removeEventListener('thumbsticktouchstart', useThumbstickMode);
+}
+$controlLeft.addEventListener('thumbsticktouchstart', useThumbstickMode); // Rift, not Vive
+$controlRight.addEventListener('thumbsticktouchstart', useThumbstickMode); // Rift, not Vive
 
 let currentCameraMover = null // can be null, 'control-left' or 'control-right'
 const trackpadStartPosition = { x:null, y:null }
@@ -629,7 +647,14 @@ const moveCamera = function (evt) {
   //console.log(($cameraPosition.getAttribute('position')).x);
   if (null === currentCameraMover) return // shouldn't ever happen
   if (evt.detail.target.id !== currentCameraMover) return // don't let the other controller confuse us!
-  if (null === trackpadStartPosition.x && evt.detail.axis[0] && evt.detail.axis[1]) { // immediately after startMovingCamera() -- note that some weird Vive bug means that we have to ignore the situation where axis === [0,0]
+  if (thumbstickMode) {
+    const camPos = $cameraPosition.getAttribute('position');
+    $cameraPosition.setAttribute('position', {
+      x: camPos.x + ( evt.detail.axis[0] * 0.01),
+      y: camPos.y - ( evt.detail.axis[1] * 0.01), // note minus not plus, so head downwards when thumb is pulled towards the user
+      z: 3.7
+    })
+  } else if (null === trackpadStartPosition.x && evt.detail.axis[0] && evt.detail.axis[1]) { // immediately after startMovingCamera() -- note that some weird Vive bug means that we have to ignore the situation where axis === [0,0]
     trackpadStartPosition.x = evt.detail.axis[0]
     trackpadStartPosition.y = evt.detail.axis[1]
   } else {
@@ -640,12 +665,12 @@ const moveCamera = function (evt) {
     })
   }
 }
-$controlLeft.addEventListener('touchstart', startMovingCamera);
-$controlRight.addEventListener('touchstart', startMovingCamera);
-$controlLeft.addEventListener('touchend', endMovingCamera);
-$controlRight.addEventListener('touchend', endMovingCamera);
-$controlLeft.addEventListener('axismove', moveCamera);
-$controlRight.addEventListener('axismove', moveCamera);
+$controlLeft.addEventListener('touchstart', startMovingCamera); // Rift and Vive
+$controlRight.addEventListener('touchstart', startMovingCamera); // Rift and Vive
+$controlLeft.addEventListener('touchend', endMovingCamera); // Rift and Vive
+$controlRight.addEventListener('touchend', endMovingCamera); // Rift and Vive
+$controlLeft.addEventListener('axismove', moveCamera); // Rift and Vive
+$controlRight.addEventListener('axismove', moveCamera); // Rift and Vive
 
 
 //// Deal with UI events.
