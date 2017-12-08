@@ -198,8 +198,10 @@ AFRAME.registerComponent('ui-event', {
     </a-entity>
 
   <!-- Laser Controls -->
-  <a-entity id="control-left"  laser-controls="hand: left"  raycaster="objects:[ui-event]; far: 20" line="color: yellow; opacity: 0.75"></a-entity>
-  <a-entity id="control-right" laser-controls="hand: right" raycaster="objects:[ui-event]; far: 20" line="color: red; opacity: 0.75"></a-entity><!-- shows both yellow - laser-controls bug? -->
+  <a-entity id="control-wrap" visible="false">
+    <a-entity id="control-left"  laser-controls="hand: left"  raycaster="objects:[ui-event]; far: 20" line="color: yellow; opacity: 0.75"></a-entity>
+    <a-entity id="control-right" laser-controls="hand: right" raycaster="objects:[ui-event]; far: 20" line="color: red; opacity: 0.75"></a-entity><!-- shows both yellow - laser-controls bug? -->
+  </a-entity>
 
 </a-entity>
 
@@ -540,7 +542,6 @@ window.addEventListener('keydown', function (evt) {
 
 //// Determine whether device has gyroscope. stackoverflow.com/a/33843234
 let gyroPresent = false
-/*
 window.addEventListener('devicemotion', function (evt) {
     if (evt.rotationRate.alpha || evt.rotationRate.beta || evt.rotationRate.gamma) {
         gyroPresent = true;
@@ -548,7 +549,6 @@ window.addEventListener('devicemotion', function (evt) {
         $cursor.setAttribute('position', '0 0 -1')
     }
 });
-*/
 
 //// Deal with enter/exit VR.
 const $header = document.querySelector('header')
@@ -556,7 +556,9 @@ const $footer = document.querySelector('footer')
 const $scene  = document.querySelector('a-scene')
 //const $cursor = document.querySelector('#cursor')
 const $cameraWrap = document.querySelector('#camera-wrap')
+const $controlWrap = document.querySelector('#control-wrap')
 $scene.addEventListener('enter-vr', function () {
+    $controlWrap.setAttribute('visible', 'true')
     if (gyroPresent) {
         $header.style.display = 'none'
         $footer.style.display = 'none'
@@ -566,6 +568,7 @@ $scene.addEventListener('enter-vr', function () {
     }
 });
 $scene.addEventListener('exit-vr', function () {
+    $controlWrap.setAttribute('visible', 'false')
     if (! gyroPresent) {
         $header.style.display = 'block'
         $footer.style.display = 'block'
@@ -704,8 +707,8 @@ window.addEventListener('ui-event', function (evt) {
 function handleMenuEvent (evt, el) {
   const type = evt.detail.type
   if ('mousedown' !== type) return
-  console.log( $camera.getAttribute('position'), $camera.getAttribute('rotation') );
-  $menu.setAttribute('scale', '0.2 0.2 0.2')
+  $menu.setAttribute('scale', '0 0 0')
+  $scene.exitVR()
 }
 
 function handlePolyEvent (evt, el) {
