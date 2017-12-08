@@ -1,8 +1,8 @@
 ooOOoom
 =======
 
-+ __Last update:__  2017/11/28
-+ __Version:__      1.1.11
++ __Last update:__  2017/12/08
++ __Version:__      1.1.12
 
 #### The spooky Oom sneak preview, released on Halloween 2017
 
@@ -53,3 +53,4 @@ Changelog
 + 1.1.9 Vive left and right controllers both appear
 + 1.1.10 Vive both controllers fully work, Firefox and Chromium
 + 1.1.11 Rift both controllers fully work, Firefox and Chromium
++ 1.1.12 Click trackpad or thumbstick when not hovering to reset view
