@@ -198,8 +198,8 @@ AFRAME.registerComponent('ui-event', {
     </a-entity>
 
   <!-- Laser Controls -->
-  <a-entity id="control-left"  laser-controls="left"></a-entity>
-  <a-entity id="control-right" laser-controls="right"></a-entity>
+  <a-entity id="control-left"  laser-controls="hand: left"></a-entity>
+  <a-entity id="control-right" laser-controls="hand: right"></a-entity>
 
 </a-entity>
 
@@ -594,6 +594,7 @@ const $controlRight = document.querySelector('#control-right')
 
 const $menu = document.querySelector('#menu')
 const toggleMenu = function () {
+  console.log( $menu.getAttribute('scale'));
   $menu.setAttribute(
     'scale',
     0 === $menu.getAttribute('scale').x ? '2 1.7 0.05' : '0 0 0'
@@ -623,13 +624,11 @@ const endMovingCamera = function () {
   trackpadStartPosition.x = null
   trackpadStartPosition.y = null
   cameraStartPosition = $cameraPosition.getAttribute('position')
-  console.log('THERE');
 }
 const moveCamera = function (evt) {
   if (null === trackpadStartPosition.x && evt.detail.axis[0] && evt.detail.axis[1]) { // immediately after startMovingCamera() -- note that some weird Vive bug means that we have to ignore the situation where axis === [0,0]
     trackpadStartPosition.x = evt.detail.axis[0]
     trackpadStartPosition.y = evt.detail.axis[1]
-    console.log('here!!', trackpadStartPosition.x, trackpadStartPosition.y);
   } else {
     $cameraPosition.setAttribute('position', {
       x: cameraStartPosition.x + (evt.detail.axis[0] - trackpadStartPosition.x),
