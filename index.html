@@ -197,16 +197,9 @@ AFRAME.registerComponent('ui-event', {
       </a-entity>
     </a-entity>
 
-  <!-- Hand Controls -->
-  <!-- <a-entity laser-controls="left"></a-entity> -->
-  <a-entity id="control-left" position="0 0 0" scale="1 1 1" laser-controls="left"></a-entity>
-
-  <!-- <a-entity id="rightHand"
-      oculus-touch-controls="hand: right"
-      gearvr-controls="hand: right"
-      daydream-controls="hand: right"
-      vive-controls="hand: right">
-  </a-entity> -->
+  <!-- Laser Controls -->
+  <a-entity id="control-left"  laser-controls="left"></a-entity>
+  <a-entity id="control-right" laser-controls="right"></a-entity>
 
 </a-entity>
 
@@ -596,22 +589,58 @@ $scene.addEventListener('toggleMenu', function () {
 
 //// Vive events.
 //// This toggles the menu, nomatter where the laser is pointing.
+const $controlLeft  = document.querySelector('#control-left')
+const $controlRight = document.querySelector('#control-right')
+
 const $menu = document.querySelector('#menu')
-const $controlLeft = document.querySelector('#control-left')
-$controlLeft.addEventListener('menudown', function () {
+const toggleMenu = function () {
   $menu.setAttribute(
     'scale',
     0 === $menu.getAttribute('scale').x ? '2 1.7 0.05' : '0 0 0'
   )
-});
-$controlLeft.addEventListener('trackpaddown', function () {
+}
+$controlLeft.addEventListener('menudown', toggleMenu);
+$controlRight.addEventListener('menudown', toggleMenu);
+
+const hidePoly = function () {
   for (let poly of polys)
     if (poly.isHovering)
       poly.$el.setAttribute('visible', 'false')
-});
-$controlLeft.addEventListener('axismove', function (evt) { // tends to get triggered when trackpad is pressed, too
-  console.log(evt.detail.axis)
-});
+};
+$controlLeft.addEventListener('trackpaddown', hidePoly);
+$controlRight.addEventListener('trackpaddown', hidePoly);
+
+let currentCameraMover = null // can be null, 'control-left' or 'control-right'
+const trackpadStartPosition = { x:null, y:null }
+let cameraStartPosition
+const startMovingCamera = function (evt) {
+  if (null !== currentCameraMover) return // already moving - don't mix up trackpad inputs!!
+  currentCameraMover = evt.detail.target.id
+  cameraStartPosition = $cameraPosition.getAttribute('position')
+}
+const endMovingCamera = function () {
+  currentCameraMover = null
+  trackpadStartPosition.x = null
+  trackpadStartPosition.y = null
+  cameraStartPosition = $cameraPosition.getAttribute('position')
+  console.log('THERE');
+}
+const moveCamera = function (evt) {
+  if (null === trackpadStartPosition.x && evt.detail.axis[0] && evt.detail.axis[1]) { // immediately after startMovingCamera() -- note that some weird Vive bug means that we have to ignore the situation where axis === [0,0]
+    trackpadStartPosition.x = evt.detail.axis[0]
+    trackpadStartPosition.y = evt.detail.axis[1]
+    console.log('here!!', trackpadStartPosition.x, trackpadStartPosition.y);
+  } else {
+    $cameraPosition.setAttribute('position', {
+      x: cameraStartPosition.x + (evt.detail.axis[0] - trackpadStartPosition.x),
+      y: cameraStartPosition.y + (evt.detail.axis[1] - trackpadStartPosition.y),
+      z: 3.7
+    })
+  }
+}
+$controlLeft.addEventListener('touchstart', startMovingCamera);
+$controlLeft.addEventListener('touchend', endMovingCamera);
+$controlLeft.addEventListener('axismove', moveCamera);
 
 
 //// Deal with UI events.
@@ -627,6 +656,7 @@ function handlePolyEvent (evt, el) {
     const id = +( el.id.substr(1) )
         , type = evt.detail.type
         , poly = polys[id]
+    if (! poly.$el) return console.log('No such poly! Debug me :-)');
     if ('mouseenter' === type) {
         poly.hoverScaleTarget = 1.1
         poly.isHovering = true

@@ -2,7 +2,7 @@ ooOOoom
 =======
 
 + __Last update:__  2017/11/28
-+ __Version:__      1.1.7
++ __Version:__      1.1.8
 
 #### The spooky Oom sneak preview, released on Halloween 2017
 
@@ -49,3 +49,4 @@ Changelog
 + 1.1.5 Vive menu-button toggles #menu scale
 + 1.1.6 Vive trackpaddown makes hovered-poly invisible
 + 1.1.7 Vive trackpad axismove x and y logs to console
++ 1.1.8 Vive trackpad axismove x and y moves camera position
