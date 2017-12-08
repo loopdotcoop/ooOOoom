@@ -54,4 +54,4 @@ Changelog
 + 1.1.10 Vive both controllers fully work, Firefox and Chromium
 + 1.1.11 Rift both controllers fully work, Firefox and Chromium
 + 1.1.12 Click trackpad or thumbstick when not hovering to reset view
-+ 1.2.0 Tested on Vive and Rift
++ 1.2.0 Tested on Vive and Rift ok!
